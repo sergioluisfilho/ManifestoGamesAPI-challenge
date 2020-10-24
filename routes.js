@@ -27,13 +27,16 @@ function logRequests(req, res, next) {
 
 routes.use(logRequests);
 
-routes.get('/players/:username', (req, res) => {
-    const {username} = req.params
+routes.get('/players/login', checkPlayerExists, (req, res) => {
+    const {username, password} = req.body
     const player = players.find(p => p.username == username);
-    res.send(`bem vindo, ${player.username}`)
+    if(player.password === password){
+        res.send(`bem vindo, ${player.username}`)
+    }
 
-
-
+    else{
+        res.send('/password incorrect')
+    }   
 })
 
 routes.get('/players', (req, res) => {

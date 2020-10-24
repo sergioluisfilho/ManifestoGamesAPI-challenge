@@ -42,11 +42,12 @@ routes.get('/players', (req, res) => {
 
 
 routes.post('/players', (req, res) => {
-  const { id, username } = req.body;
+  const {username, password } = req.body;
 
   const player = {
-    id,
+    id: players.length + 1,
     username,
+    password,
     items: []
   };
 

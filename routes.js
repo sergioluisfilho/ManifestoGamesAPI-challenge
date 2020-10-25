@@ -17,6 +17,16 @@ function checkPlayerExists(req, res, next) {
   return next();
 }
 
+function checkUsernameExists(req, res, next) {
+    const { username } = req.body;
+    const player = players.find(p => p.username == username);
+  
+    if (!player) {
+      return res.send('username incorrect')
+    }
+  
+    return next();
+  }
 
 function logRequests(req, res, next) {
 
@@ -27,7 +37,7 @@ function logRequests(req, res, next) {
 
 routes.use(logRequests);
 
-routes.get('/players/login', checkPlayerExists, (req, res) => {
+routes.get('/players/login', checkUsernameExists, (req, res) => {
     const {username, password} = req.body
     const player = players.find(p => p.username == username);
     if(player.password === password){
@@ -35,7 +45,7 @@ routes.get('/players/login', checkPlayerExists, (req, res) => {
     }
 
     else{
-        res.send('/password incorrect')
+        res.send('password incorrect')
     }   
 })
 

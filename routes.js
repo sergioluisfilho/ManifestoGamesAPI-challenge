@@ -2,8 +2,9 @@ const express = require('express');
 
 const routes = express();
 
-
 const players = [];
+
+const {news, createNews} = require('./news')
 
 
 function checkPlayerExists(req, res, next) {
@@ -89,7 +90,7 @@ routes.delete('/players/:id', checkPlayerExists, (req, res) => {
 
   players.splice(playerIndex, 1);
 
-  return res.send();
+  return res.send('Player was successfully deleted');
 });
 
 
@@ -103,5 +104,15 @@ routes.post('/players/:id/items', checkPlayerExists, (req, res) => {
 
   return res.json(player);
 });
+
+routes.post('/news', (req, res) => {
+   const {title, img_url, news_redirect} = req.body;
+   news.push(createNews(title, img_url, news_redirect))
+   return res.send('Notícia enviada')
+})
+
+routes.get('/news', (req, res) => {
+  return res.json(news);
+})
 
 module.exports = routes
